@@ -218,10 +218,11 @@ deployJob.with {
             |  echo "Application is not up yet. Retrying ..Attempt (${COUNT})"
             |  sleep 5
             |  COUNT=$((COUNT+1))
+            |PUBLIC_IP=$(echo $(curl -s icanhazip.com))
             |done
             |echo "=.=.=.=.=.=.=.=.=.=.=.=."
             |echo "=.=.=.=.=.=.=.=.=.=.=.=."
-            |echo "Environment URL (replace PUBLIC_IP with your public ip address where you access jenkins from) : http://${SERVICE_NAME}.PUBLIC_IP.xip.io/petclinic"
+            |echo "Environment URL: http://${SERVICE_NAME}.${PUBLIC_IP}.xip.io/petclinic"
             |echo "=.=.=.=.=.=.=.=.=.=.=.=."
             |echo "=.=.=.=.=.=.=.=.=.=.=.=."
             |set -x'''.stripMargin()
@@ -473,22 +474,14 @@ deployJobToProdA.with {
             |  echo "Application is not up yet. Retrying ..Attempt (${COUNT})"
             |  sleep 5
             |  COUNT=$((COUNT+1))
+            |PUBLIC_IP=$(echo $(curl -s icanhazip.com))
             |done
             |echo "=.=.=.=.=.=.=.=.=.=.=.=."
             |echo "=.=.=.=.=.=.=.=.=.=.=.=."
-            |echo "Environment URL (replace PUBLIC_IP with your public ip address where you access jenkins from) : http://${SERVICE_NAME}.PUBLIC_IP.xip.io/petclinic"
+            |echo "Environment URL: http://${SERVICE_NAME}.${PUBLIC_IP}.xip.io/petclinic"
             |echo "=.=.=.=.=.=.=.=.=.=.=.=."
             |echo "=.=.=.=.=.=.=.=.=.=.=.=."
             |set -x'''.stripMargin())
-    }
-    publishers {
-        buildPipelineTrigger(projectFolderName + "/Reference_Application_Deploy_ProdB") {
-            parameters {
-                predefinedProp("B", '${B}')
-                predefinedProp("PARENT_BUILD", '${PARENT_BUILD}')
-                predefinedProp("ENVIRONMENT_PREVNODE", '${ENVIRONMENT_NAME}')
-            }
-        }
     }
 }
 
